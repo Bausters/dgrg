@@ -1,0 +1,64 @@
+// Main site structure using React, Tailwind CSS, Stripe, and a basic CMS setup
+
+import { useState } from 'react';
+import { ShoppingCart, Heart, Dog } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { motion } from 'framer-motion';
+
+export default function DoggoStore() {
+  const [cart, setCart] = useState([]);
+
+  const addToCart = (item) => setCart([...cart, item]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-yellow-50 to-orange-100 font-sans">
+      {/* Navbar */}
+      <nav className="flex justify-between items-center p-4 shadow-sm sticky top-0 bg-white z-50">
+        <motion.div whileTap={{ rotate: 15 }} onClick={() => new Audio('/bark.mp3').play()} className="flex items-center gap-2 cursor-pointer">
+          <Dog className="text-yellow-500" />
+          <h1 className="text-xl font-bold text-gray-800">DoggoDrop</h1>
+        </motion.div>
+        <div className="flex items-center gap-4">
+          <Heart className="cursor-pointer text-pink-500 hover:scale-110 transition-transform" />
+          <div className="relative">
+            <ShoppingCart className="cursor-pointer text-blue-500 hover:scale-110 transition-transform" />
+            <span className="absolute -top-2 -right-2 text-xs bg-red-500 text-white rounded-full px-1">{cart.length}</span>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero Section */}
+      <header className="text-center py-20 px-4 bg-[url('/hero-dogs.jpg')] bg-cover bg-center text-white">
+        <h2 className="text-4xl md:text-6xl font-extrabold drop-shadow-md">Cool Stuff for Cooler Dogs</h2>
+        <p className="mt-4 text-lg md:text-xl max-w-xl mx-auto drop-shadow-sm">Shop quirky, quality gear for your furry legend. Sunglasses not included (but sold separately 🕶️)</p>
+        <Button className="mt-6 bg-yellow-500 text-white hover:bg-yellow-400 px-6 py-2 text-lg rounded-xl">Shop Now</Button>
+      </header>
+
+      {/* Products Section */}
+      <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-6">
+        {[1, 2, 3, 4, 5, 6].map((i) => (
+          <motion.div
+            key={i}
+            whileHover={{ scale: 1.05 }}
+            className="bg-white rounded-2xl shadow-md overflow-hidden transition-transform"
+          >
+            <img src={`/products/product${i}.jpg`} alt="Dog product" className="w-full h-48 object-cover" />
+            <CardContent className="p-4">
+              <h3 className="font-semibold text-lg">Doggo Toy {i}</h3>
+              <p className="text-gray-600">$19.99</p>
+              <Button onClick={() => addToCart(`Doggo Toy ${i}`)} className="mt-2 w-full bg-blue-500 text-white hover:bg-blue-400">
+                Add to Cart
+              </Button>
+            </CardContent>
+          </motion.div>
+        ))}
+      </section>
+
+      {/* Footer */}
+      <footer className="p-6 text-center text-sm text-gray-600">
+        © 2025 DoggoDrop. Built with treats and tail wags.
+      </footer>
+    </div>
+  );
+}
